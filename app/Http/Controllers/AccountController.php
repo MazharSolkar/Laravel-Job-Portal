@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class AccountController extends Controller
@@ -24,7 +25,7 @@ class AccountController extends Controller
 
         // Hashing the password before storing in db
         $validateData['password'] = bcrypt($request->password);
-        
+
         // Remove password_confirmation from the data array since we don't need to store it
         unset($validateData['password_confirmation']);
 
@@ -39,5 +40,27 @@ class AccountController extends Controller
     // This method will show user login page
     public function login() {
         return view('login');
+    }
+
+    public function processLogin(Request $request) {
+        $validateData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if(Auth::attempt($validateData)) {
+            return redirect()->route('account.profile');
+        } else {
+            return redirect()->route('account.login')->with('error', 'Invalid Credentials.');
+        }
+    }
+
+    public function profile() {
+        return view("profile");
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect('account.login');
     }
 }

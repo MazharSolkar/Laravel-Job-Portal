@@ -10,7 +10,20 @@ use App\Http\Controllers\AccountController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/account/register', [AccountController::class, 'registration'])->name('account.register');
-Route::post('/account/process-register', [AccountController::class, 'processRegistration'])->name('account.processRegistration');
+Route::group(['prefix'=>'account'], function() {
+    // Guest Route
+    Route::middleware(['guestUser'])->group(function() {
+        Route::get('/register', [AccountController::class, 'registration'])->name('account.register');
+        Route::post('/process-register', [AccountController::class, 'processRegistration'])->name('account.processRegistration');
+        
+        Route::get('/login', [AccountController::class, 'login'])->name('account.login');
+        Route::post('/process-login', [AccountController::class, 'processLogin'])->name('account.processLogin');
+    });
 
-Route::get('/account/login', [AccountController::class, 'login'])->name('account.login');
+    // Authenticated Routes
+    Route::middleware(['authUser'])->group(function() {
+        Route::get('/profile',[AccountController::class, 'profile'])->name('account.profile');
+        Route::get('/logout',[AccountController::class, 'logout'])->name('account.logout');
+    });
+
+});

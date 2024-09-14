@@ -8,12 +8,18 @@
                     {{session('success')}}
                 </div>
             @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{session('error')}}
+                </div>
+            @endif
             <div class="py-lg-2">&nbsp;</div>
             <div class="row d-flex justify-content-center">
                 <div class="col-md-5">
                     <div class="card shadow border-0 p-5">
                         <h1 class="h3">Login</h1>
-                        <form action="account.html" method="post">
+                        <form action="{{route('account.processLogin')}}" method="POST">
+                            @CSRF
                             <div class="mb-3">
                                 <label for="email" class="mb-2">Email*</label>
                                 <input value="{{old('email')}}" type="text" name="email" id="email" class="form-control @error('email') border-danger @enderror" placeholder="example@example.com">
