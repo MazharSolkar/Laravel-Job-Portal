@@ -3,16 +3,7 @@
 @section('main')
     <section class="section-5">
         <div class="container my-5">
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{session('success')}}
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{session('error')}}
-                </div>
-            @endif
+            @include('message')
             <div class="py-lg-2">&nbsp;</div>
             <div class="row d-flex justify-content-center">
                 <div class="col-md-5">

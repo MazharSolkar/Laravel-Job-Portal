@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -17,9 +16,9 @@ class AccountController extends Controller
     // This method will save a user
     public function processRegistration(Request $request) {
         $validateData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:4|same:password_confirmation',
+            'name' => 'required:min:5|max:20',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:5|same:password_confirmation',
             'password_confirmation' => 'required'
         ]);
 
@@ -56,11 +55,38 @@ class AccountController extends Controller
     }
 
     public function profile() {
-        return view("profile");
+
+        // getting the logged-in user.
+        $user = Auth::user();
+
+        return view("profile", ['user'=> $user]);
+    }
+
+    public function updateProfile(Request $request) {
+
+        // Getting the logged-in user.
+        $user = Auth::user();
+
+        $validateData = $request->validate([
+            'name' => 'required|min:5|max:20',
+            'email' => 'required|email|unique:users,email,'.$user->id.'id',
+            'mobile' => 'nullable|numeric',
+            'designation' => 'nullable|string|max:50'
+        ]);
+
+        // $user->name = $request->name;
+        // $user->email = $request->email;
+        // $user->mobile = $request->mobile;
+        // $user->designation = $request->designation;
+        // $user->save();
+
+        $user->update($validateData);
+
+        return redirect()->route('account.profile')->with('success', 'Profile updated successfully.');
     }
 
     public function logout() {
         Auth::logout();
-        return redirect('account.login');
+        return redirect()->route('account.login');
     }
 }
