@@ -46,16 +46,18 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form enctype="multipart/form-data" action="{{route('account.updateProfilePic')}}" method="POST">
+			@CSRF
+			@method('PUT')
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Profile Image</label>
-                <input type="file" class="form-control" id="image"  name="image">
+                <label for="image" class="form-label">Profile Image</label>
+                <input type="file" class="form-control" id="image" name="image">
+				@error('image')<p class="text-danger">{{ $message }}</p>@enderror
             </div>
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary mx-3">Update</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-            
+            </div>      
         </form>
       </div>
     </div>

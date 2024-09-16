@@ -14,11 +14,11 @@
                 </div>
             </div>
             <div class="row">
+                @include('message')
                 <div class="col-lg-3">
                     @include('sidebar')
                 </div>
                 <div class="col-lg-9">
-                    @include('message')
                     <div class="card border-0 shadow mb-4">
                         <form action="{{route('account.updateProfile')}}" method="POST">
                             @CSRF
@@ -28,18 +28,22 @@
                                 <div class="mb-4">
                                     <label for="name" class="mb-2">Name*</label>
                                     <input type="text" name="name" id="name" placeholder="Enter Name" class="form-control" value="{{$user->name}}">
+                                    @error('name')<p class="text-danger">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="mb-4">
                                     <label for="email" class="mb-2">Email*</label>
                                     <input type="text" name="email" id="email" placeholder="Enter Email" class="form-control" value="{{$user->email}}" >
+                                    @error('email')<p class="text-danger">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="mb-4">
                                     <label for="designation" class="mb-2">Designation*</label>
                                     <input type="text" name="designation" id="designation" placeholder="Designation" class="form-control" value="{{$user->designation}}">
+                                    @error('designation')<p class="text-danger">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="mb-4">
                                     <label for="mobile" class="mb-2">Mobile*</label>
                                     <input type="text" name="mobile" id="mobile" placeholder="Mobile" class="form-control" value="{{$user->mobile}}">
+                                    @error('mobile')<p class="text-danger">{{ $message }}</p>@enderror
                                 </div>                        
                             </div>
                             <div class="card-footer  p-4">
