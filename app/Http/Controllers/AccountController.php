@@ -138,8 +138,7 @@ class AccountController extends Controller
     }
 
     public function postJob(Request $request) {
-        //! dd($request->all());
-
+        
         $validateData = $request->validate([
             'title' => 'required|min:5|max:200',
             'category_id' => 'required',
@@ -152,7 +151,7 @@ class AccountController extends Controller
         ]);
         
         // $validateData['salary'] = $request->input('salary');
-        $validatedData['user_id'] = Auth::user()->id;
+        $validateData['user_id'] = Auth::user()->id;
         $validateData['salary'] = $request->salary;
         $validateData['company_location'] = $request->company_location;
         $validateData['company_website'] = $request->company_website;
@@ -161,6 +160,7 @@ class AccountController extends Controller
         $validateData['qualifications'] = $request->qualifications;
         $validateData['keywords'] = $request->keywords;
 
+        // dd($validateData);
         $job = Job::create($validateData);
 
         return redirect()->route('account.myJobs')
@@ -169,9 +169,9 @@ class AccountController extends Controller
 
     public function myJobs() {
         $user = Auth::user();
-        $jobs = Job::where('user_id',$user->id)->paginate(10);
-        dd($jobs);
+        $jobs = Job::where('user_id',$user->id)->with('jobType')->paginate(10);
 
-        return view('job.my-jobs', compact('user'));
+        // dd($jobs);
+        return view('job.my-jobs', compact('user', 'jobs'));
     }
 }

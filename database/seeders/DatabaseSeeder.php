@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\JobType;
+use App\Models\Job;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -54,6 +55,8 @@ class DatabaseSeeder extends Seeder
                 ['name' => 'Information Technology']
             ]
         );
+
+        Job::factory(25)->create();
 
     }
 }
