@@ -174,4 +174,51 @@ class AccountController extends Controller
         // dd($jobs);
         return view('job.my-jobs', compact('user', 'jobs'));
     }
+
+    public function editJob(Job $job) {
+        // Ensure that the authenticated user owns the job
+        if ($job->user_id !== Auth::user()->id) {
+            abort(403); // 403 Forbidden if user doesn't own the job
+        }
+        
+        $user = Auth::user();
+        $categories = Category::orderBy('name', 'ASC')->where('status', 1)->get();
+        $jobTypes = JobType::orderBy('name', 'ASC')->where('status', 1)->get();
+
+        return view('job.edit', compact('user', 'categories', 'jobTypes', 'job'));
+    }
+
+    public function updateJob(Request $request, Job $job) {
+        // Ensure that the authenticated user owns the job
+        if (Auth::user()->id !== $job->user_id) {
+            abort(403); // 403 Forbidden if user doesn't own the job
+        }
+    
+        $validateData = $request->validate([
+            'title' => 'required|min:5|max:200',
+            'category_id' => 'required',
+            'job_type_id' => 'required',
+            'vacancy' => 'required|integer',
+            'job_location' => 'required|max:50',
+            'description' => 'required|max:250',
+            'company_name' => 'required|min:3|max:50',
+            'experience' => 'required'
+        ]);
+    
+        // Add additional fields
+        $validateData['salary'] = $request->salary;
+        $validateData['company_location'] = $request->company_location;
+        $validateData['company_website'] = $request->company_website;
+        $validateData['benefits'] = $request->benefits;
+        $validateData['responsibility'] = $request->responsibility;
+        $validateData['qualifications'] = $request->qualifications;
+        $validateData['keywords'] = $request->keywords;
+    
+        // Update the job record in the database
+        $job->update($validateData);
+    
+        return redirect()->route('account.myJobs')
+                         ->with('success', 'Job Updated Successfully.');
+    }
+    
 }
