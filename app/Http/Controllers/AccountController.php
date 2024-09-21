@@ -220,5 +220,18 @@ class AccountController extends Controller
         return redirect()->route('account.myJobs')
                          ->with('success', 'Job Updated Successfully.');
     }
+
+    public function deleteJob(Job $job)
+    {
+        // Ensure the user owns the job
+        if (Auth::user()->id !== $job->user_id) {
+            abort(403); // 403 Forbidden if the user doesn't own the job
+        }
+    
+        $job->delete();
+    
+        return redirect()->route('account.myJobs')
+                         ->with('success', 'Job deleted successfully.');
+    }
     
 }
