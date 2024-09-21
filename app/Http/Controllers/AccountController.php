@@ -152,6 +152,7 @@ class AccountController extends Controller
         ]);
         
         // $validateData['salary'] = $request->input('salary');
+        $validatedData['user_id'] = Auth::user()->id;
         $validateData['salary'] = $request->salary;
         $validateData['company_location'] = $request->company_location;
         $validateData['company_website'] = $request->company_website;
