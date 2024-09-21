@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
+use App\Models\Category;
+use App\Models\JobType;
+use App\Models\Job;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -34,10 +38,8 @@ class AccountController extends Controller
         // Create the user
         $user = User::create($validateData);
 
-        if($user) {
-            return redirect()->route('account.login')
-                             ->with('success', 'Registrated Successfully.');
-        }
+        return redirect()->route('account.login')
+                         ->with('success', 'Registrated Successfully.');
     }
     // This method will show user login page
     public function login() {
@@ -125,5 +127,48 @@ class AccountController extends Controller
     public function logout() {
         Auth::logout();
         return redirect()->route('account.login');
+    }
+
+    public function createJob(Request $request) {
+        $user = Auth::user();
+        $categories = Category::orderBy('name', 'ASC')->where('status', 1)->get();
+        $jobTypes = JobType::orderBy('name', 'ASC')->where('status', 1)->get();
+
+        return view('job.create',compact('user','categories','jobTypes'));
+    }
+
+    public function postJob(Request $request) {
+        //! dd($request->all());
+
+        $validateData = $request->validate([
+            'title' => 'required|min:5|max:200',
+            'category_id' => 'required',
+            'job_type_id' => 'required',
+            'vacancy' => 'required|integer',
+            'job_location' => 'required|max:50',
+            'description' => 'required|max:250',
+            'company_name' => 'required|min:3|max:50',
+            'experience' => 'required'
+        ]);
+        
+        // $validateData['salary'] = $request->input('salary');
+        $validateData['salary'] = $request->salary;
+        $validateData['company_location'] = $request->company_location;
+        $validateData['company_website'] = $request->company_website;
+        $validateData['benefits'] = $request->benefits;
+        $validateData['responsibility'] = $request->responsibility;
+        $validateData['qualifications'] = $request->qualifications;
+        $validateData['keywords'] = $request->keywords;
+
+        $job = Job::create($validateData);
+
+        return redirect()->route('account.myJobs')
+                        ->with('success', 'New Job Posted Successfully.');
+    }
+
+    public function myJobs() {
+        $user = Auth::user();
+
+        return view('job.my-jobs', compact('user'));
     }
 }

@@ -3,6 +3,7 @@
 @section('main')
     <section class="section-5 bg-2">
         <div class="container py-5">
+            @include('message')
             <div class="row">
                 <div class="col">
                     <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
@@ -14,7 +15,6 @@
                 </div>
             </div>
             <div class="row">
-                @include('message')
                 <div class="col-lg-3">
                     @include('sidebar')
                 </div>

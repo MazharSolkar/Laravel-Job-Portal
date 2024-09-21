@@ -27,5 +27,10 @@ Route::group(['prefix'=>'account'], function() {
         Route::put('/update-profile-pic',[AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
 
         Route::get('/logout',[AccountController::class, 'logout'])->name('account.logout');
+
+        Route::get('/create-job',[AccountController::class, 'createJob'])->name('account.createJob');
+        Route::post('/post-job',[AccountController::class, 'postJob'])->name('account.postJob');
+
+        Route::get('/my-jobs',[AccountController::class, 'myJobs'])->name('account.myJobs');
     });
 });
