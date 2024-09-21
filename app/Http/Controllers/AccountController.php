@@ -169,6 +169,8 @@ class AccountController extends Controller
 
     public function myJobs() {
         $user = Auth::user();
+        $jobs = Job::where('user_id',$user->id)->paginate(10);
+        dd($jobs);
 
         return view('job.my-jobs', compact('user'));
     }

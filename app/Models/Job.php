@@ -13,6 +13,7 @@ class Job extends Model
         'title',
         'category_id',
         'job_type_id',
+        'user_id',
         'vacancy',
         'job_location',
         'company_location',
