@@ -79,7 +79,7 @@
                                         <div class="bg-light p-3 border">
                                             <p class="mb-0">
                                                 <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
-                                                <span class="ps-1">{{$featuredJob->location}}</span>
+                                                <span class="ps-1">{{$featuredJob->job_location}}</span>
                                             </p>
                                             <p class="mb-0">
                                                 <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
@@ -94,7 +94,7 @@
                                         </div>
 
                                         <div class="d-grid mt-3">
-                                            <a href="job-detail.html" class="btn btn-primary btn-lg">Details</a>
+                                            <a href="{{route('jobDetail', $featuredJob->id)}}" class="btn btn-primary btn-lg">Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                                         <div class="bg-light p-3 border">
                                             <p class="mb-0">
                                                 <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
-                                                <span class="ps-1">{{$latestJob->location}}</span>
+                                                <span class="ps-1">{{$latestJob->job_location}}</span>
                                             </p>
                                             <p class="mb-0">
                                                 <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
@@ -140,7 +140,7 @@
                                         </div>
 
                                         <div class="d-grid mt-3">
-                                            <a href="job-detail.html" class="btn btn-primary btn-lg">Details</a>
+                                            <a href="{{route('jobDetail', $latestJob->id)}}" class="btn btn-primary btn-lg">Details</a>
                                         </div>
                                     </div>
                                 </div>
