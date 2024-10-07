@@ -15,7 +15,8 @@ class JobsController extends Controller
 
         $jobs = Job::where('status', 1)
                     ->with('jobType')
-                    ->orderBy('created_at', 'DESC')->paginate(9);
+                    ->latest()
+                    ->paginate(9);
 
         return view('jobs', compact('categories', 'jobTypes', 'jobs'));
     }
