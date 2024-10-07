@@ -104,9 +104,9 @@
                                                     <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
                                                     <span class="ps-1">{{$job->jobType->name}}</span>
                                                 </p>
-                                                <p>Experience: {{$job->experience}}</p>
+                                                {{-- <p>Experience: {{$job->experience}}</p>
                                                 <p>keywords: {{$job->keywords}}</p>
-                                                <p>category: {{$job->category->name}}</p>
+                                                <p>category: {{$job->category->name}}</p> --}}
                                                 @if (!empty($job->salary))                    
                                                     <p class="mb-0">
                                                         <span class="fw-bolder"><i class="fa fa-usd"></i></span>
