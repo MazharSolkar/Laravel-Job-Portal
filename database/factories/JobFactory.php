@@ -16,6 +16,9 @@ class JobFactory extends Factory
      */
     public function definition(): array
     {
+        // Predefined set of keywords
+        $keywordList = ['PHP', 'Laravel', 'Backend Developer', 'Full-stack', 'JavaScript', 'API', 'Agile'];
+
         return [
             'title'=> fake()->name,
             'job_type_id' => rand(1,5),
@@ -26,6 +29,7 @@ class JobFactory extends Factory
             'description' => fake()->text,
             'experience' => rand(1, 10),
             'company_name' => fake()->name,
+            'keywords' => implode(',', fake()->randomELements($keywordList, 1)),
         ];
     }
 }

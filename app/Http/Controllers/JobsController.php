@@ -9,15 +9,54 @@ use App\Models\Job;
 
 class JobsController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         $categories = Category::where('status',1)->get();
         $jobTypes = JobType::where('status',1)->get();
 
-        $jobs = Job::where('status', 1)
-                    ->with('jobType')
-                    ->latest()
-                    ->paginate(9);
+        $jobs = JOB::where('status',1);
 
-        return view('jobs', compact('categories', 'jobTypes', 'jobs'));
+        // Search using keyword
+        if(!empty($request->keywords)) {
+            $jobs = $jobs->where(function($query) use($request) {
+                $query->orWhere('title', 'like', '%'.$request->keywords.'%');
+                $query->orWhere('keywords', 'like', '%'.$request->keywords.'%');
+            });
+        }
+
+        // Search using location
+        if(!empty($request->job_location)) {
+            $jobs = $jobs->where('job_location', $request->job_location);
+        }
+
+        // Search using category
+        if(!empty($request->category)) {
+            $jobs = $jobs->where('category_id', $request->category);
+        }
+
+        // Search using Job Type
+        $jobTypeArray = [];
+        if(!empty($request->job_type)) {
+            // 1, 2, 3
+            $jobTypeArray = $request->job_type;
+            $jobs = $jobs->whereIn('job_type_id', $jobTypeArray);
+        }
+
+        // Search using experience
+        if(!empty($request->experience)) {
+            $jobs = $jobs->where('experience', $request->experience);
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 1); //if sort parameter is not there then set value or $sort as 1.
+
+        if($sort == 0) {
+            $jobs = $jobs->oldest();
+        } else {
+            $jobs = $jobs->latest();
+        }
+
+        $jobs = $jobs->with(['jobType', 'category'])->paginate(9);
+
+        return view('jobs', compact('categories', 'jobTypes', 'jobs', 'jobTypeArray'));
     }
 }
