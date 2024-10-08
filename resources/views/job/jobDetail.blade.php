@@ -15,6 +15,7 @@
     </div>
     <div class="container job_details_area">
         <div class="row pb-5">
+            @include('message')
             <div class="col-md-8">
                 <div class="card shadow border-0">
                     <div class="job_details_header">
@@ -68,10 +69,18 @@
                             @endif
                         </div>
                         <div class="border-bottom"></div>
-                        <div class="pt-3 text-end">
+                        <div class="pt-3 text-end d-flex justify-content-end">
+                            <form action="{{ route('applyJob', $job->id) }}" method="POST" style="margin-right: 10px;">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $job->id }}">
+                                @if (Auth::check())
+                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                @else
+                                    <a href="#" class="btn btn-primary disabled">Login to Apply</a>
+                                @endif
+                            </form>
                             <a href="#" class="btn btn-secondary">Save</a>
-                            <a href="#" class="btn btn-primary">Apply</a>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             </div>

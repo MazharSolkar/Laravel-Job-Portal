@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\JobType;
+use App\Models\JobApplication;
 use App\Models\Job;
+use Illuminate\Support\Facades\Auth;
 
 class JobsController extends Controller
 {
@@ -73,5 +75,47 @@ class JobsController extends Controller
         }
 
         return view('job.jobDetail', compact('job'));
+    }
+
+    public function applyJob(Request $request) {
+
+        // dd($request->id);
+
+        $job = Job::where('id', $request->id)->first();
+
+        // If job not found in db
+        if($job == null) {
+            $message = 'Job does not exist';
+            return redirect()->back()->with('error', $message);
+        }
+
+        // You can not apply on the job you posted
+        $employer_id = $job->user_id;
+
+        if($employer_id == Auth::user()->id) {
+            $message = 'You can not apply on the job you posted';
+            return redirect()->back()->with('error', $message);
+        }
+
+        // You can not apply on a job twice
+        $hasApplied = JobApplication::where([
+            'user_id' => Auth::user()->id,
+            'job_id' => $request->id
+        ])->exists();
+
+        if($hasApplied) {
+            $message = 'Already applied';
+            return redirect()->back()->with('error', $message);
+        }
+
+        // apply
+        JobApplication::create([
+            'job_id' => $request->id,
+            'user_id' => Auth::id(),
+            'employer_id' => $job->user_id,
+            'applied_date' => now(),
+        ]);
+
+        return redirect()->back()->with('success','You have successfully applied');
     }
 }
