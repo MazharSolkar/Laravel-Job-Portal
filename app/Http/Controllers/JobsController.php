@@ -7,7 +7,10 @@ use App\Models\Category;
 use App\Models\JobType;
 use App\Models\JobApplication;
 use App\Models\Job;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\mail\JobNotificationEmail;
 
 class JobsController extends Controller
 {
@@ -115,6 +118,15 @@ class JobsController extends Controller
             'employer_id' => $job->user_id,
             'applied_date' => now(),
         ]);
+
+        // Send Notification Email to Employer
+        $employer = User::where('id', $employer_id)->first();
+        $mailData = [
+            'employer' => $employer,
+            'user' => Auth::user(),
+            'job' => $job,
+        ];
+        Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
 
         return redirect()->back()->with('success','You have successfully applied');
     }
