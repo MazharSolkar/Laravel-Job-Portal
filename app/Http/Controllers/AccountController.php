@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\JobType;
 use App\Models\Job;
+use App\Models\JobApplication;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -237,4 +238,27 @@ class AccountController extends Controller
                          ->with('success', 'Job deleted successfully.');
     }
     
+    public function myJobApplications() {
+        //* Eloquet ORM way Get job applications for the authenticated user using Eloquent relationship
+        // $jobApplications = Auth::user()->jobApplications;
+
+        $jobApplications = JobApplication::where('user_id', Auth::user()->id)
+                                        ->with(['job', 'job.jobType', 'job.jobApplications'])
+                                        ->paginate(10);
+        // dd($jobApplications);
+
+        return view('job.my-job-applications', compact('jobApplications'));
+    }
+
+    public function deleteJobApplication(JobApplication $application) {
+         // Check if the authenticated user is the owner of the job application
+        if ($application->user_id !== Auth::user()->id) {
+            return redirect()->back()->with('error', 'Job application not found');
+        }
+
+        // Delete the job application
+        $application->delete();
+
+        return redirect()->back()->with('success', 'Job application deleted successfully.');
+    }
 }

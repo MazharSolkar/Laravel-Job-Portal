@@ -40,5 +40,8 @@ Route::group(['prefix'=>'account'], function() {
         Route::get('/my-jobs/edit/{job}',[AccountController::class, 'editJob'])->name('account.editJob');
         Route::put('/my-jobs/update/{job}',[AccountController::class, 'updateJob'])->name('account.updateJob');
         Route::delete('/my-jobs/delete/{job}',[AccountController::class, 'deleteJob'])->name('account.deleteJob');
+        Route::get('/my-job-applications',[AccountController::class, 'myJobApplications'])->name('account.myJobApplications');
+
+        Route::delete('/delete-job-application/{application}',[AccountController::class, 'deleteJobApplication'])->name('account.deleteJobApplication');
     });
 });
