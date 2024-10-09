@@ -42,7 +42,9 @@ Route::group(['prefix'=>'account'], function() {
         Route::put('/my-jobs/update/{job}',[AccountController::class, 'updateJob'])->name('account.updateJob');
         Route::delete('/my-jobs/delete/{job}',[AccountController::class, 'deleteJob'])->name('account.deleteJob');
         Route::get('/my-job-applications',[AccountController::class, 'myJobApplications'])->name('account.myJobApplications');
-
+        
         Route::delete('/delete-job-application/{application}',[AccountController::class, 'deleteJobApplication'])->name('account.deleteJobApplication');
+        Route::get('/saved-jobs',[AccountController::class, 'savedJobs'])->name('account.savedJobs');
+        Route::delete('/delete-saved-job/{job}',[AccountController::class, 'deleteSavedJob'])->name('account.deleteSavedJob');
     });
 });

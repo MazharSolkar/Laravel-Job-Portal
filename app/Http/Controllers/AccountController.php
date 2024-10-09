@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\JobType;
 use App\Models\Job;
 use App\Models\JobApplication;
+use App\Models\SavedJob;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -244,6 +245,7 @@ class AccountController extends Controller
 
         $jobApplications = JobApplication::where('user_id', Auth::user()->id)
                                         ->with(['job', 'job.jobType', 'job.jobApplications'])
+                                        ->latest()
                                         ->paginate(10);
         // dd($jobApplications);
 
@@ -261,4 +263,26 @@ class AccountController extends Controller
 
         return redirect()->back()->with('success', 'Job application deleted successfully.');
     }
+
+    public function savedJobs() {
+        $savedJobs = SavedJob::where(['user_id' => Auth::user()->id])
+                                ->with('job','job.jobType', 'job.jobApplications')
+                                ->latest()
+                                ->paginate(10);
+        
+
+        return view('job.saved-Jobs', compact('savedJobs'));
+    }
+
+    public function deleteSavedJob(SavedJob $job) {
+        // Check if the authenticated user is the owner of the job application
+       if ($job->user_id !== Auth::user()->id) {
+           return redirect()->back()->with('error', 'Job not found');
+       }
+
+       // Delete the saved job
+       $job->delete();
+
+       return redirect()->back()->with('success', 'Saved Job deleted successfully.');
+   }
 }
