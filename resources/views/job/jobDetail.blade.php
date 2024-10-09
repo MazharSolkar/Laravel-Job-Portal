@@ -28,10 +28,10 @@
                                     </a>
                                     <div class="links_locat d-flex align-items-center">
                                         <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i>{{$job->job_location}}</p>
+                                            <p> <i class="fa fa-map-marker"></i>&nbsp;{{$job->job_location}}</p>
                                         </div>
                                         <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i>{{$job->jobType->name}}</p>
+                                            <p> <i class="fa fa-clock-o"></i>&nbsp;{{$job->jobType->name}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -96,6 +96,49 @@
                         </div>                        
                     </div>
                 </div>
+
+                {{-- Only show applicants to the user who created job (i.e. employer) --}}
+                @if(Auth::user() && Auth::user()->id == $job->user_id)
+                <div class="card shadow border-0 mt-4">
+                    <div class="job_details_header">
+                        <div class="single_jobs white-bg d-flex justify-content-between">
+                            <div class="jobs_left d-flex align-items-center">
+                                
+                                <div class="jobs_conetent">
+                                    <a href="#">
+                                        <h4>Applicants</h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="jobs_right"></div>
+                        </div>
+                    </div>
+                    <div class="descript_wrap white-bg">
+                        <table class="table">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Applied Data</th>
+                            </tr>
+                            @forelse ($applications as $application)
+                                <tr>
+                                    <td>{{$application->user->name}}</td>
+                                    <td>{{$application->user->email}}</td>
+                                    <td>{{$application->user->mobile}}</td>
+                                    <td>{{$application->applied_date->format('F j, Y')}}</td>
+                                </tr>  
+                            @empty
+                                <tr>
+                                    <td colspan="4">No Applicants yet</td>
+                                </tr>
+                            @endforelse
+                        </table>
+                    </div>
+                </div>
+                @endif
+
             </div>
             <div class="col-md-4">
                 <div class="card shadow border-0">

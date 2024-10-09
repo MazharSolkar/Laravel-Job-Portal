@@ -80,7 +80,7 @@ class JobsController extends Controller
 
         // jobExists code is for toggling heart icon color
         $jobExists = false;
-        
+
         if(Auth::user()) {
             $jobExists = SavedJob::where([
                                     'user_id' => Auth::user()->id,
@@ -88,7 +88,12 @@ class JobsController extends Controller
             ])->exists();
         }
 
-        return view('job.jobDetail', compact('job', 'jobExists'));
+        // fetch applicants
+        $applications = JobApplication::where('job_id', $id)
+                                        ->with('user')
+                                        ->get();
+
+        return view('job.jobDetail', compact('job', 'jobExists', 'applications'));
     }
 
     public function applyJob(Request $request) {
