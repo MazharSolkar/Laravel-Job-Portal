@@ -37,9 +37,13 @@
                                 </div>
                             </div>
                             <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                                </div>
+                                <form action="{{route('saveJob')}}" method="POST">
+                                    @CSRF
+                                    <input type="hidden" name="id" value="{{ $job->id }}">
+                                    <button class="apply_now" style="border:none; background-color:white;">
+                                        <a id="save-job-btn" class="heart_mark" style="{{$jobExists? 'background-color: #00D363; color: #fff' : ''}}"> <i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -79,7 +83,16 @@
                                     <a href="#" class="btn btn-primary disabled">Login to Apply</a>
                                 @endif
                             </form>
-                            <a href="#" class="btn btn-secondary">Save</a>
+
+                            <form action="{{ route('saveJob', $job->id) }}" method="POST" style="margin-right: 10px;">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $job->id }}">
+                                @if (Auth::check())
+                                    <button type="submit" class="btn btn-secondary">Save</button>
+                                @else
+                                    <a href="#" class="btn btn-secondary disabled">Login to Save</a>
+                                @endif
+                            </form>
                         </div>                        
                     </div>
                 </div>

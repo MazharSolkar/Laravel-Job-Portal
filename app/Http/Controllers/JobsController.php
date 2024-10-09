@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\JobType;
 use App\Models\JobApplication;
 use App\Models\Job;
+use App\Models\SavedJob;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -77,7 +78,13 @@ class JobsController extends Controller
             abort(404);
         }
 
-        return view('job.jobDetail', compact('job'));
+        // jobExists code is for toggling heart icon color
+        $jobExists = SavedJob::where([
+                                'user_id' => Auth::user()->id,
+                                'job_id' => $id
+        ])->exists();
+
+        return view('job.jobDetail', compact('job', 'jobExists'));
     }
 
     public function applyJob(Request $request) {
@@ -129,5 +136,34 @@ class JobsController extends Controller
         Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
 
         return redirect()->back()->with('success','You have successfully applied');
+    }
+
+    public function saveJob(Request $request) {
+
+        $job = Job::find($request->id);
+
+        if($job == null) {
+            $message = 'Job does not found';
+            return redirect()->back()->with('error', $message);
+        }
+
+        // Check if user already saved the job
+        $hasSaved = SavedJob::where([
+            'user_id' => Auth::user()->id,
+            'job_id' => $request->id
+        ])->exists();
+
+        if($hasSaved) {
+            $message = 'Already Saved';
+            return redirect()->back()->with('error', $message);
+        }
+
+        $savedJob = new savedJob;
+        $savedJob->job_id = $request->id;
+        $savedJob->user_id = Auth::user()->id;
+        $savedJob->save();
+
+        return redirect()->back()->with('success', 'Job saved.');
+
     }
 }
