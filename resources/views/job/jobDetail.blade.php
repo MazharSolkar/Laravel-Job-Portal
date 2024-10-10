@@ -51,25 +51,25 @@
                         <div class="single_wrap">
                             @if (!empty($job->description))
                                 <h4>Job description</h4>
-                                {{strip_tags($job->description)}}
+                                {!! $job->description !!}
                             @endif
                         </div>
                         <div class="single_wrap">
                             @if (!empty($job->responsibility))
                                 <h4>Responsibility</h4>
-                                {{strip_tags($job->responsibility)}}
+                                {!! $job->responsibility !!}
                             @endif
                         </div>
                         <div class="single_wrap">
                             @if (!empty($job->description))
                                 <h4>Qualifications</h4>
-                                {{strip_tags($job->description)}}
+                                {!! $job->description !!}
                             @endif
                         </div>
                         <div class="single_wrap">
                             @if (!empty($job->benefits))
                                 <h4>Benefits</h4>
-                                {{strip_tags($job->benefits)}}
+                                {!! $job->benefits !!}
                             @endif
                         </div>
                         <div class="border-bottom"></div>
