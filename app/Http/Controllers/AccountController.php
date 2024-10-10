@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
@@ -124,6 +125,26 @@ class AccountController extends Controller
 
         return redirect()->back()->with('success', 'Profile picture updated successfully.');
 
+    }
+
+    public function updatePassword(Request $request) {
+        
+        $validatedData = $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:5',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        
+        $user = Auth::user();
+
+        if(Hash::check($request->old_password, $user->password) == false) {
+            return redirect()->back()->with('error', 'Your old password is incorrect.');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password changed successfully.');
     }
 
     public function logout() {

@@ -3,7 +3,6 @@
 @section('main')
     <section class="section-5 bg-2">
         <div class="container py-5">
-            @include('message')
             <div class="row">
                 <div class="col">
                     <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
@@ -19,6 +18,7 @@
                     @include('sidebar')
                 </div>
                 <div class="col-lg-9">
+                    @include('message')
                     <div class="card border-0 shadow mb-4">
                         <form action="{{route('account.updateProfile')}}" method="POST">
                             @CSRF
@@ -53,26 +53,29 @@
                     </div>
 
                     <div class="card border-0 shadow mb-4">
-                        <form action="" method="POST">
+                        <form action="{{route('account.updatePassword')}}" method="POST">
                             @CSRF
                             @method('PUT')
                             <div class="card-body p-4">
                                 <h3 class="fs-4 mb-1">Change Password</h3>
                                 <div class="mb-4">
                                     <label for="old_password" class="mb-2">Old Password*</label>
-                                    <input type="password" name="old_password" id="old_password" placeholder="Old Password" class="form-control">
+                                    <input type="password" name="old_password" value="{{old('old_password')}}" id="old_password" placeholder="Old Password" class="form-control">
+                                    @error('old_password')<p class="text-danger">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="mb-4">
                                     <label for="new_pasword" class="mb-2">New Password*</label>
-                                    <input type="password" name="new_pasword" id="new_pasword" placeholder="New Password" class="form-control">
+                                    <input type="password" name="new_password" id="new_password" value="{{old('new_password')}}" placeholder="New Password" class="form-control">
+                                    @error('new_password')<p class="text-danger">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="mb-4">
                                     <label for="confirm_password" class="mb-2">Confirm Password*</label>
-                                    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" class="form-control">
+                                    <input type="password" name="confirm_password" value="{{old('confirm_password')}}" id="confirm_password" placeholder="Confirm Password" class="form-control">
+                                    @error('confirm_password')<p class="text-danger">{{ $message }}</p>@enderror
                                 </div>                        
                             </div>
                             <div class="card-footer  p-4">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Update Password</button>
                             </div>
                         </form>
                     </div>                
