@@ -83,20 +83,20 @@
 
                             <div class="mb-4">
                                 <label for="description" class="mb-2">Description<span class="req">*</span></label>
-                                <textarea class="form-control" name="description" id="description" cols="5" rows="5" placeholder="Description">{{old('description')}}</textarea>
+                                <textarea class="form-control textarea" name="description" id="description" cols="5" rows="5" placeholder="Description">{{old('description')}}</textarea>
                                 @error('description')<p class="text-danger">{{ $message }}</p>@enderror
                             </div>
                             <div class="mb-4">
                                 <label for="benefits" class="mb-2">Benefits</label>
-                                <textarea class="form-control" name="benefits" id="benefits" cols="5" rows="5" placeholder="Benefits">{{old('benefits')}}</textarea>
+                                <textarea class="form-control textarea" name="benefits" id="benefits" cols="5" rows="5" placeholder="Benefits">{{old('benefits')}}</textarea>
                             </div>
                             <div class="mb-4">
                                 <label for="responsibility" class="mb-2">Responsibility</label>
-                                <textarea class="form-control" name="responsibility" id="responsibility" cols="5" rows="5" placeholder="Responsibility">{{old('responsibility')}}</textarea>
+                                <textarea class=" form-control textarea" name="responsibility" id="responsibility" cols="5" rows="5" placeholder="Responsibility">{{old('responsibility')}}</textarea>
                             </div>
                             <div class="mb-4">
                                 <label for="qualification" class="mb-2">Qualifications</label>
-                                <textarea class="form-control" name="qualifications" id="qualifications" cols="5" rows="5" placeholder="Qualifications">{{old('qualications')}}</textarea>
+                                <textarea class="form-control textarea" name="qualifications" id="qualifications" cols="5" rows="5" placeholder="Qualifications">{{old('qualications')}}</textarea>
                             </div>
                             
                             <div class="mb-4">
