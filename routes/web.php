@@ -6,6 +6,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\JobController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -23,6 +24,7 @@ Route::prefix('admin')->middleware(['checkRole'])->group(function() {
     Route::get('/users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/jobs', [JobController::class, 'index'])->name('admin.jobs');
 });
 
 Route::group(['prefix'=>'account'], function() {
