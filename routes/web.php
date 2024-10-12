@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\UserController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -18,6 +19,7 @@ Route::post('/save-job', [JobsController::class, 'saveJob'])->name('saveJob');
 // Admin Routes
 Route::prefix('admin')->middleware(['checkRole'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users');
 });
 
 Route::group(['prefix'=>'account'], function() {
