@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
         User::insert(
             [
                 [
@@ -37,6 +38,21 @@ class DatabaseSeeder extends Seeder
                 [
                     'name' => 'muskan',
                     'email' => 'muskan@gmail.com',
+                    'password' => bcrypt('password')
+                ],
+                [
+                    'name' => 'tajammul',
+                    'email' => 'tajammul@gmail.com',
+                    'password' => bcrypt('password')
+                ],
+                [
+                    'name' => 'amir',
+                    'email' => 'amir@gmail.com',
+                    'password' => bcrypt('password')
+                ],
+                [
+                    'name' => 'ahad',
+                    'email' => 'ahad@gmail.com',
                     'password' => bcrypt('password')
                 ]
             ]
@@ -61,7 +77,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Job::factory(25)->create();
+        // Job::factory(25)->create();
 
     }
 }
