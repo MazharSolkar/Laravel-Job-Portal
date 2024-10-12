@@ -15,13 +15,14 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $userRole = $request->user()->role;
 
-        if($userRole == null) {
-            return redirect()->route('home');
+        // Checking if the user is logged in or not
+        if($request->user() == null) {
+            return redirect()->back();
         }
-        if($userRole != 'admin') {
-            return redirect()->route('account.profile')->with('error', 'You are not authorized to access this page.');
+        // Checking the role of user
+        if($request->user()->role != 'admin') {
+            return redirect()->back()->with('error', 'You are not authorized to access this page.');
         }
         return $next($request);
     }
