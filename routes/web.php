@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\JobsController;
-
+use App\Http\Controllers\admin\DashboardController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -14,6 +14,11 @@ Route::get('/jobs', [JobsController::class, 'index'])->name('jobs');
 Route::get('/jobs/detail/{id}', [JobsController::class, 'detail'])->name('jobDetail');
 Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('applyJob');
 Route::post('/save-job', [JobsController::class, 'saveJob'])->name('saveJob');
+
+// Admin Routes
+Route::prefix('admin')->middleware(['authUser', 'checkRole'])->group(function() {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+});
 
 Route::group(['prefix'=>'account'], function() {
     // Guest Route
