@@ -16,7 +16,7 @@ Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('applyJob')
 Route::post('/save-job', [JobsController::class, 'saveJob'])->name('saveJob');
 
 // Admin Routes
-Route::prefix('admin')->middleware(['authUser', 'checkRole'])->group(function() {
+Route::prefix('admin')->middleware(['checkRole'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 });
 
