@@ -44,7 +44,6 @@
                                             <tr class="active">
                                                 <td>
                                                     <p>{{$application->job->title}}</p>
-                                                    {{-- <p>Applicants: {{$job->jobApplications->count()}}</p> --}}
                                                 </td>
                                                 <td>{{$application->user->name}}</td>
                                                 <td>{{$application->employer->name}}</td>
