@@ -32,7 +32,7 @@
                                     <thead class="bg-light">
                                         <tr>
                                             <th scope="col">Job Title</th>
-                                            <th scope="col">User</th>
+                                            <th scope="col">Applicant</th>
                                             <th scope="col">Employer</th>
                                             <th scope="col">Applied Date </th>
                                             <th scope="col">Action</th>
@@ -46,7 +46,7 @@
                                                     <p>{{$application->job->title}}</p>
                                                     {{-- <p>Applicants: {{$job->jobApplications->count()}}</p> --}}
                                                 </td>
-                                                <td>{{$application->job->user->name}}</td>
+                                                <td>{{$application->user->name}}</td>
                                                 <td>{{$application->employer->name}}</td>
                                                 <td>{{$application->applied_date->format('d/m/y')}}</td>
 
