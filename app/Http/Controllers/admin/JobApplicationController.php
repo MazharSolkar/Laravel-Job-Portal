@@ -14,4 +14,16 @@ class JobApplicationController extends Controller
                         ->paginate(10);
         return view('admin.job-applications.list', compact('applications'));
     }
+
+    public function destroy($id) {
+
+        $JobApplication = JobApplication::find($id);
+
+        if($JobApplication == null) {
+            return redirect()->back()->with('error', 'Job Application not Found');
+        }
+
+        $JobApplication->delete();
+        return redirect()->back()->with('success', 'Job Application deleted Successfully.');
+    }
 }
