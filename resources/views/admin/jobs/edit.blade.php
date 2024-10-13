@@ -82,6 +82,28 @@
                                         @error('job_location')<p class="text-danger">{{ $message }}</p>@enderror
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="mb-4 col-md-6">
+                                        <div class="form-check">
+                                            <input  {{($job->isFeatured) == 1 ? 'checked' : ''}} type="checkbox" class="form-check-input" value="1" id="isFeatured" name="isFeatured">
+                                            <label for="isFeatured" class="form-check-label">Featured</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="mb-4 col-md-6">
+                                        <div class="form-check-inline">
+                                            <input {{($job->status) == 1 ? 'checked' : ''}} type="radio" class="form-check-input" value="1" id="status-active" name="status">
+                                            <label class="form-check-label">Active</label>
+                                        </div>
+                                        <div class="form-check-inline">
+                                            <input {{($job->status) == 0 ? 'checked' : ''}} type="radio" class="form-check-input" value="0" id="status-block" name="status">
+                                            <label class="form-check-label">Block</label>
+                                        </div>
+                                    </div>
+                                </div>
     
                                 <div class="mb-4">
                                     <label for="description" class="mb-2">Description<span class="req">*</span></label>

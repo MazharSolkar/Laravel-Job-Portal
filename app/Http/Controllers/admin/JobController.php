@@ -51,9 +51,13 @@ class JobController extends Controller
         $validateData['responsibility'] = $request->responsibility;
         $validateData['qualifications'] = $request->qualifications;
         $validateData['keywords'] = $request->keywords;
-    
+        $validateData['status'] = $request->status;
+        //? empty() -> returns true if the isFeatured field missing or don't contain value.
+        
         // Update the job record in the database
         $job = Job::find($id);
+        $job->isFeatured = (!empty($request->isFeatured)) ? $request->isFeatured : 0;
+        //? $job->update() -> method updates the model with provided data plus automatically triggers the saving process therefore there is no need of calling $job->save() as we are using $job->update().
         $job->update($validateData);
     
         return redirect()->route('admin.jobs')
