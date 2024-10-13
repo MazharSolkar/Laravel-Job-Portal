@@ -63,4 +63,16 @@ class JobController extends Controller
         return redirect()->route('admin.jobs')
                          ->with('success', 'Job Updated Successfully.');
     }
+
+    public function destroy($id) {
+
+        $job = Job::find($id);
+
+        if($job == null) {
+            return redirect()->back()->with('error', 'Job not Found');
+        }
+
+        $job->delete();
+        return redirect()->back()->with('success', 'Job deleted Successfully.');
+    }
 }

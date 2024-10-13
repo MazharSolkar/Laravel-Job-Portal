@@ -68,7 +68,7 @@
                                                         <ul class="dropdown-menu dropdown-menu-end">
                                                             <li><a class="dropdown-item" href="{{route('admin.jobs.edit',$job->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
                                                             <li>
-                                                                <form action="#" method="POST" onsubmit="return confirm('Are you sure you want to delete this job?');">
+                                                                <form action="{{route('admin.jobs.destroy', $job->id)}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this job?');">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="dropdown-item text-danger">
