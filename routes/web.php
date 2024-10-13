@@ -41,6 +41,11 @@ Route::group(['prefix'=>'account'], function() {
         
         Route::get('/login', [AccountController::class, 'login'])->name('account.login');
         Route::post('/process-login', [AccountController::class, 'processLogin'])->name('account.processLogin');
+
+        Route::get('/forgot-password', [AccountController::class, 'forgotPassword'])->name('account.forgotPassword');
+        Route::post('/process-forgot-password', [AccountController::class, 'processForgotPassword'])->name('account.processForgotPassword');
+        Route::get('/reset-password/{token}', [AccountController::class, 'resetPassword'])->name('account.resetPassword');
+        Route::post('/process-reset-password/{token}', [AccountController::class, 'processResetPassword'])->name('account.processResetPassword');
     });
 
     // Authenticated Routes

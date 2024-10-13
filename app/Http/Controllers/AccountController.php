@@ -15,6 +15,9 @@ use App\Models\JobApplication;
 use App\Models\SavedJob;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPasswordEmail;
 
 class AccountController extends Controller
 {
@@ -305,5 +308,75 @@ class AccountController extends Controller
        $job->delete();
 
        return redirect()->back()->with('success', 'Saved Job deleted successfully.');
+   }
+
+   public function forgotPassword() {
+    return view('forgot-password');
+   }
+
+   public function processForgotPassword(Request $request) {
+    $validatedData = $request->validate([
+        'email' => 'required|email|exists:users,email'
+    ]);
+
+    $token = str()->random(60);
+
+    \DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+    \DB::table('password_reset_tokens')->insert([
+        'email' => $request->email,
+        'token' => $token,
+        'created_at' => now()
+    ]);
+
+    // Sending email
+    $user = User::where('email', $request->email)->first();
+
+    $mailData = [
+        'token' => $token,
+        'user' => $user,
+        'subject' => 'You have requested to change your password.'
+    ];
+
+    Mail::to($request->email)->send(new ResetPasswordEmail($mailData));
+
+    return redirect()->route('account.forgotPassword')->with('success', 'Reset password email has been sent to your inbox.');
+    
+   }
+
+   public function resetPassword($token) {
+    // Check if token exists in db
+    $resetToken = \DB::table('password_reset_tokens')->where('token', $token)->first();
+    // if doesn't exist then redirect
+    if($resetToken == null) {
+        return redirect()->route('account.forgotPassword')->with('error', 'Invalid token.');
+    }
+
+    return view('reset-password', ['token' => $resetToken->token]);
+   }
+
+   public function processResetPassword(Request $request, $token) {
+    // Check if token exists in db
+    $resetToken = \DB::table('password_reset_tokens')->where('token', $token)->first();
+    // if doesn't exist then redirect
+    if($resetToken == null) {
+        return redirect()->route('account.forgotPassword')->with('error', 'Invalid token.');
+    }
+
+    // Validate request data
+    $validatedData = $request->validate([
+        'new_password' => 'required|min:5',
+        'confirm_password' => 'required|same:new_password',
+    ]);
+
+    // Update password of the user
+    $user = User::where('email', $resetToken->email)->first();
+    $user->update([
+        'password' => bcrypt($request->new_password)
+    ]);
+
+    return redirect()->route('account.login')->with('success', 'You have successfully changed your password.');
+
+
    }
 }
