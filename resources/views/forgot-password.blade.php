@@ -23,7 +23,7 @@
                         </form>                    
                     </div>
                     <div class="mt-4 text-center">
-                        <p>Do not have an account? <a  href="{{route('account.login')}}">Back to Login</a></p>
+                        <p>Already have an account? <a  href="{{route('account.login')}}">Back to Login</a></p>
                     </div>
                 </div>
             </div>

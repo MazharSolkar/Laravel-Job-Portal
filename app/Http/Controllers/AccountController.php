@@ -13,6 +13,7 @@ use App\Models\JobType;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\SavedJob;
+use App\Models\passwordResetToken;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Str;
@@ -319,11 +320,14 @@ class AccountController extends Controller
         'email' => 'required|email|exists:users,email'
     ]);
 
+    // Generate Token
     $token = str()->random(60);
 
-    \DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+    // Delete any existing tokens for this email
+    PasswordResetToken::where('email', $request->email)->delete();
 
-    \DB::table('password_reset_tokens')->insert([
+    // Insert new token
+    PasswordResetToken::create([
         'email' => $request->email,
         'token' => $token,
         'created_at' => now()
@@ -346,9 +350,9 @@ class AccountController extends Controller
 
    public function resetPassword($token) {
     // Check if token exists in db
-    $resetToken = \DB::table('password_reset_tokens')->where('token', $token)->first();
+    $resetToken = PasswordResetToken::where('token', $token)->first();
     // if doesn't exist then redirect
-    if($resetToken == null) {
+    if ($resetToken == null) {
         return redirect()->route('account.forgotPassword')->with('error', 'Invalid token.');
     }
 
@@ -357,9 +361,10 @@ class AccountController extends Controller
 
    public function processResetPassword(Request $request, $token) {
     // Check if token exists in db
-    $resetToken = \DB::table('password_reset_tokens')->where('token', $token)->first();
-    // if doesn't exist then redirect
-    if($resetToken == null) {
+    $resetToken = PasswordResetToken::where('token', $token)->first();
+
+    // If doesn't exist then redirect
+    if ($resetToken == null) {
         return redirect()->route('account.forgotPassword')->with('error', 'Invalid token.');
     }
 
